@@ -39,12 +39,15 @@ class UserDB
 
             return $errors->__get('errors');
         }
-        try {
+
+        $result = $this->db->query("SELECT id, email FROM usuario WHERE email = ?;", [$dataRevisados['email']]);
+
+        if ($result->num_rows > 0) {
+            return 'Email ya existente!';
+        } else {
             $this->db->query("INSERT INTO usuario (nombre, email) VALUES (?, ?);", [$dataRevisados['nombre'], $dataRevisados['email']]);
 
-            return $this->db->query("SELECT count(LAST_INSERT_ID()) AS inserted;")->fetch_assoc()['inserted'];
-        } catch (\Throwable $th) {
-            return '0';
+            return $this->db->query("SELECT LAST_INSERT_ID() AS newId;")->fetch_assoc()['newId'];
         }
     }
 
@@ -60,9 +63,19 @@ class UserDB
             return $errors->__get('errors');
         }
 
-        $this->db->query("UPDATE usuario SET nombre = ?, email = ? WHERE id = ?;", [$nombre, $email, $id]);
+        $result = $this->db->query("SELECT SUM(CASE WHEN id = ? THEN 1 ELSE 0 END) AS count_id, SUM(CASE WHEN email = ? THEN 1 ELSE 0 END) AS count_email FROM usuario WHERE id = ? OR email = ?;", [$id, $dataRevisados['email'], $id, $dataRevisados['email']])->fetch_assoc();
 
-        return $this->db->query("SELECT ROW_COUNT() AS affected;")->fetch_assoc()['affected'];
+        if ($result['count_id'] == 1) {
+            if ($result['count_email'] == 0) {
+                $this->db->query("UPDATE usuario SET nombre = ?, email = ? WHERE id = ?;", [$dataRevisados['nombre'], $dataRevisados['email'], $id]);
+
+                return $this->db->query("SELECT ROW_COUNT() AS affected;")->fetch_assoc()['affected'];
+            } else {
+                return 'Email ya existente!';
+            }
+        } else {
+            return 'ID no existente!';
+        }
     }
 
     public function delete($id)

@@ -28,7 +28,7 @@ switch ($method) {
             updateUser($userDB, $id);
         } else {
             http_response_code(400);
-            echo json_encode(['error' => 'ID no especificado.'], JSON_UNESCAPED_UNICODE);
+            echo json_encode(['Error' => 'ID no especificado.'], JSON_UNESCAPED_UNICODE);
         }
         break;
 
@@ -37,7 +37,7 @@ switch ($method) {
             deleteUser($userDB, $id);
         } else {
             http_response_code(400);
-            echo json_encode(['error' => 'ID no especificado.'], JSON_UNESCAPED_UNICODE);
+            echo json_encode(['Error' => 'ID no especificado.'], JSON_UNESCAPED_UNICODE);
         }
         break;
 
@@ -60,11 +60,21 @@ function getAllUsers($userDB)
 function setUser($userDB)
 {
     $data = json_decode(file_get_contents('php://input'), true); // obtener datos introducidos en Postman
-    $result = 'Error en body Postman';
 
-    if (isset($data['nombre']) && isset($data['email'])) {
-        $inserted = $userDB->create($data['nombre'], $data['email']);
-        $result = json_encode(['inserted' => $inserted]);
+    if (isset($data['nombre'])) {
+        if (isset($data['email'])) {
+            $inserted = $userDB->create($data['nombre'], $data['email']);
+            if ($inserted == 0) {
+                $result = 'Datos ya existentes!';
+                $result = json_encode(['insert' => $result]);
+            } else {
+                $result = json_encode(['insert' => $inserted]);
+            }
+        } else {
+            $result = 'Email no enviado';
+        }
+    } else {
+        $result = 'Nombre no enviado';
     }
 
     echo $result;
@@ -74,11 +84,25 @@ function updateUser($userDB, $id)
 {
     $idValid = Validator::cleanData([$id]);
     $data = json_decode(file_get_contents('php://input'), true);
-    $result = 'Error en body Postman';
 
-    if (isset($data['nombre']) && isset($data['email'])) {
-        $updated = $userDB->update($idValid[0], $data['nombre'], $data['email']);
-        $result =  json_encode(['updated' => $updated]); //true o false (1 o 0)
+    if (isset($idValid[0])) {
+        if (isset($data['nombre'])) {
+            if (isset($data['email'])) {
+                $updated = $userDB->update($idValid[0], $data['nombre'], $data['email']);
+                if ($updated == 0) {
+                    $result = 'Email ya existente!';
+                    $result = json_encode(['update' => $result]);
+                } else {
+                    $result = json_encode(['update' => $updated]);
+                }
+            } else {
+                $result = 'Email no enviado';
+            }
+        } else {
+            $result = 'Nombre no enviado';
+        }
+    } else {
+        $result = 'ID no válido';
     }
 
     echo $result;
@@ -88,7 +112,7 @@ function deleteUser($userDB, $id)
 {
     $idValid = Validator::cleanData([$id]);
     $deleted = $userDB->delete($idValid[0]);
-    $result = json_encode(['deleted' => $deleted]);
+    $result = json_encode(['delete' => $deleted]);
 
     echo $result;
 }
