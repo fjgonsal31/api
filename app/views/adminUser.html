@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../public/css/adminUser.css" />
+    <title>Administración de Usuarios</title>
+  </head>
+  <body>
+    <h2>Crear Usuario</h2>
+    <form action="" method="post" id="form">
+      <input
+        type="text"
+        name="nombre"
+        id="nombre"
+        placeholder="Nombre de usuario"
+      />
+      <input type="email" name="email" id="email" placeholder="Email" />
+      <button type="submit">Crear usuario</button>
+      <div class="error" id="divError"></div>
+    </form>
+    <h2>Listado de Usuarios</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre de usuario</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <script src="../../public/js/adminUser.js"></script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../public/css/adminDirector.css" />
+    <title>Administración de Directores</title>
+  </head>
+  <body>
+    <h2>Crear Director</h2>
+    <form action="" method="post" id="form">
+      <input
+        type="text"
+        name="nombre"
+        id="nombre"
+        placeholder="Nombre del director"
+      />
+      <input
+        type="text"
+        name="apellido"
+        id="apellido"
+        placeholder="Apellido del director"
+      />
+      <input type="date" name="f_nacimiento" id="f_nacimiento" />
+      <textarea
+        name="biografia"
+        id="biografia"
+        placeholder="Biografía"
+      ></textarea>
+      <button type="submit">Crear director</button>
+      <div class="error" id="divError"></div>
+    </form>
+    <h2>Listado de Directores</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Fecha de Nacimiento</th>
+          <th>Biografía</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <script src="../../public/js/adminDirector.js"></script>
+  </body>
+</html>

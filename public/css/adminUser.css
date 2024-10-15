@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+h2 {
+  margin: 0.5rem;
+  text-align: center;
+}
+table {
+  margin: auto;
+  border-collapse: collapse;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+th {
+  background-color: aqua;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 2rem;
+}
+input {
+  padding: 0.313rem;
+  width: 10rem;
+}
+button {
+  padding: 0.313rem;
+  cursor: pointer;
+  width: 10rem;
+}
+.edit-mode input {
+  display: block;
+}
+.edit-mode span {
+  display: none;
+}
+.view-mode input {
+  display: block;
+}
+.view-mode span {
+  display: block;
+}
+.error {
+  color: red;
+  margin-top: 0.313rem;
+}
+.edit,
+.delete,
+.accept,
+.cancel {
+  width: min-content;
+  margin: 0.25rem;
+}
+.btns{
+  display: flex;
+}

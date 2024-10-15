@@ -59,26 +59,27 @@ function getAllUsers($userDB)
 
 function setUser($userDB)
 {
-    $data = json_decode(file_get_contents('php://input'), true); // obtener datos introducidos en Postman
+    $data = json_decode(file_get_contents('php://input'), true);
 
     if (isset($data['nombre'])) {
         if (isset($data['email'])) {
             $inserted = $userDB->create($data['nombre'], $data['email']);
+
             if ($inserted == 0) {
-                $result = 'Datos ya existentes!';
-                $result = json_encode(['insert' => $result]);
+                $result = json_encode(['error' => 'Datos ya existentes!']);
             } else {
                 $result = json_encode(['insert' => $inserted]);
             }
         } else {
-            $result = 'Email no enviado';
+            $result = json_encode(['error' => 'Email no enviado']);
         }
     } else {
-        $result = 'Nombre no enviado';
+        $result = json_encode(['error' => 'Nombre no enviado']);
     }
 
     echo $result;
 }
+
 
 function updateUser($userDB, $id)
 {
@@ -89,24 +90,25 @@ function updateUser($userDB, $id)
         if (isset($data['nombre'])) {
             if (isset($data['email'])) {
                 $updated = $userDB->update($idValid[0], $data['nombre'], $data['email']);
+
                 if ($updated == 0) {
-                    $result = 'Email ya existente!';
-                    $result = json_encode(['update' => $result]);
+                    $result = json_encode(['error' => 'Email ya existente!']);
                 } else {
                     $result = json_encode(['update' => $updated]);
                 }
             } else {
-                $result = 'Email no enviado';
+                $result = json_encode(['error' => 'Email no enviado']);
             }
         } else {
-            $result = 'Nombre no enviado';
+            $result = json_encode(['error' => 'Nombre no enviado']);
         }
     } else {
-        $result = 'ID no válido';
+        $result = json_encode(['error' => 'ID no válido']);
     }
 
     echo $result;
 }
+
 
 function deleteUser($userDB, $id)
 {
